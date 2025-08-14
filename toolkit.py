@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 class CalcResult():
        
     def carrega_df(self):
-        df = pd.read_pickles(r"bolao_final.pkl")
+        df = pd.read_pickle(r"bolao_final.pkl")
         # df_pos = df.loc[df['Posição']!=]
         return df
 
