@@ -1,9 +1,11 @@
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 class CalcResult():
        
     def carrega_df(self):
-        df = pd.read_pickle(r"bolao_final.pkl")
+        df = pd.read_pickles(r"bolao_final.pkl")
         # df_pos = df.loc[df['Posição']!=]
         return df
 
@@ -81,36 +83,50 @@ class CalcResult():
         df_pont = df_pont[["Posicao", "Nome", "Pontuação", "JustificativaPontuação", "QtdGolsArtilheiro", "Cravadas"]]
 
         return df_pont
- 
+    
+    def pega_lista_times(self):
+        url = "https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-a/2025"
+
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+            td = soup.find_all("tr")
+            nomes_times = []
+            dicionario = {'Atlético Mineiro Saf' : 'Atlético Mineiro',
+                            'Bahia' : 'Bahia',
+                            'Botafogo' : 'Botafogo',
+                            'Ceará' : 'Ceará',
+                            'Corinthians' : 'Corinthians',
+                            'Cruzeiro Saf' : 'Cruzeiro',
+                            'Flamengo' : 'Flamengo',
+                            'Fluminense' : 'Fluminense',
+                            'Fortaleza Ec Saf' : 'Fortaleza',
+                            'Grêmio' : 'Grêmio',
+                            'Internacional' : 'Internacional',
+                            'Juventude' : 'Juventude',
+                            'Mirassol' : 'Mirassol',
+                            'Palmeiras' : 'Palmeiras',
+                            'Red Bull Bragantino' : 'Red Bull Bragantino',
+                            'Santos Fc' : 'Santos',
+                            'São Paulo' : 'São Paulo',
+                            'Sport' : 'Sport',
+                            'Vasco da Gama S.a.f.' : 'Vasco da Gama',
+                            'Vitória' : 'Vitória',
+                                                    }
+            for tr in soup.find_all("strong"):
+                texto = tr.get_text()
+                if texto in dicionario.keys():
+                    nomes_times.append(dicionario[texto]
+                                        )
+        return nomes_times
 
 import streamlit as st
 
 st.set_page_config(page_title="Bolão Brasileirão BXXT 2K25", layout="wide")
 st.title("🏆 Bolão Brasileirão BXXT 2K25")
 
-times_serie_a_2025 = [
-    "Flamengo",
-    "Cruzeiro",
-    "Palmeiras",
-    "Bahia",
-    "Botafogo",
-    "Mirassol",
-    "São Paulo",
-    "Bragantino",
-    "Fluminense",
-    "Atlético-MG",
-    "Internacional",
-    "Ceará",
-    "Corinthians",
-    "Santos",
-    "Grêmio",
-    "Vitória",
-    "Vasco",
-    "Fortaleza",
-    "Juventude",
-    "Sport"
-]
-times_serie_a_2025.sort()
+times_serie_a_2025 = CalcResult().pega_lista_times()
 lista_art = ['Pedro/Flamengo',
 'Lucas Moura/SP',
 'Guilherme/Santos',
@@ -124,17 +140,17 @@ df_art["Gols"] = 0
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 with st.form("Dados"):
     with col1:
-        primeiro = st.selectbox("1º Colocado", options=times_serie_a_2025)
-        segundo = st.selectbox("2º Colocado", options=times_serie_a_2025)
-        terceiro = st.selectbox("3º Colocado", options=times_serie_a_2025)
-        quarto = st.selectbox("4º Colocado", options=times_serie_a_2025)
-        quinto = st.selectbox("5º Colocado", options=times_serie_a_2025)
-        sexto = st.selectbox("6º Colocado", options=times_serie_a_2025)
+        primeiro = st.selectbox("1º Colocado", options=times_serie_a_2025, index=0)
+        segundo = st.selectbox("2º Colocado", options=times_serie_a_2025, index=1)
+        terceiro = st.selectbox("3º Colocado", options=times_serie_a_2025, index=2)
+        quarto = st.selectbox("4º Colocado", options=times_serie_a_2025, index=3)
+        quinto = st.selectbox("5º Colocado", options=times_serie_a_2025, index=4)
+        sexto = st.selectbox("6º Colocado", options=times_serie_a_2025, index=5)
     with col2:
-        dezessete = st.selectbox("17º Colocado", options=times_serie_a_2025)
-        dezoito = st.selectbox("18º Colocado", options=times_serie_a_2025)
-        dezenove = st.selectbox("19º Colocado", options=times_serie_a_2025)
-        vinte = st.selectbox("20º Colocado", options=times_serie_a_2025)
+        dezessete = st.selectbox("17º Colocado", options=times_serie_a_2025, index=16)
+        dezoito = st.selectbox("18º Colocado", options=times_serie_a_2025, index=17)
+        dezenove = st.selectbox("19º Colocado", options=times_serie_a_2025, index=18)
+        vinte = st.selectbox("20º Colocado", options=times_serie_a_2025, index=19)
     with col3:
         df_artilheiro = st.data_editor(df_art, hide_index=True)
 
