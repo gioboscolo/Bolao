@@ -1,30 +1,7 @@
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
 
 class CalcResult():
-
-    # def carrega_df(self,):
-    #     df = pd.read_excel(r'C:\Users\Giovanni\Documents\Projeto Bolao\BolaÌ_o bxxt 2k25.xlsx')
-    #     df_cols = df.columns.tolist()
-
-    #     df_cols.remove('Seu Nome')
-
-    #     lista_df = []
-
-    #     #esse dataframe tem várias colunas, uma é "Seu nome". Iremos criar um novo dataframe, onde ele terá tres colunas "Nome, Time/Jogador, Posição". Para cada
-    #     # vamos percorrer o df para preencher esse novo dataframe. Nome vem da coluna "seu nome", "posição" é o nome da outra coluna (exceto a coluna "seu nome"), e time/jogador é o valor dentro do dataframe
-    #     for nome in df['Seu Nome'].tolist():
-    #         df_temp = df.loc[df['Seu Nome']==nome]
-    #         for col in df_cols:
-    #             new_df = pd.DataFrame({'Nome':[nome]})
-    #             new_df['Time/Jogador'] = df_temp[col].iloc[0]
-    #             new_df['Posição'] = col
-    #             lista_df.append(new_df)
-    #     df_final = pd.concat(lista_df)
-    
-    #     return df_final
-        
+       
     def carrega_df(self):
         df = pd.read_excel(r"bolao_final.xlsx", sheet_name='Sheet1')
         # df_pos = df.loc[df['Posição']!=]
@@ -105,18 +82,6 @@ class CalcResult():
 
         return df_pont
  
-
-class apitempo_real():
-
-    def le_tabela_ge(self):
-        link = "https://api.api-futebol.com.br/v1/me"
-        #acessa o link pela biblioteca requests (get)
-        re = requests.get(link, headers={"Authorization":f"Bearer test_a8c37778328495ac24c5d0d3c3923b"})
-        txt = re.text
-        soup = BeautifulSoup(re.text, "html.parser")
-        elementos = soup.find_all(class_='classificacao_campeonato campeonato_brasileiro')
-        for e in elementos:
-            print(e.get_text(strip=True)) 
 
 import streamlit as st
 
