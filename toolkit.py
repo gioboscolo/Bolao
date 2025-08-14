@@ -26,7 +26,7 @@ class CalcResult():
     #     return df_final
         
     def carrega_df(self):
-        df = pd.read_excel(r"C:\Users\Giovanni\Documents\Projeto Bolao\bolao_final.xlsx", sheet_name='Sheet1')
+        df = pd.read_excel(r"bolao_final.xlsx", sheet_name='Sheet1')
         # df_pos = df.loc[df['Posição']!=]
         return df
 
