@@ -3,7 +3,7 @@ import pandas as pd
 class CalcResult():
        
     def carrega_df(self):
-        df = pd.read_excel(r"bolao_final.xlsx", sheet_name='Sheet1')
+        df = pd.read_pickle(r"bolao_final.pkl")
         # df_pos = df.loc[df['Posição']!=]
         return df
 
